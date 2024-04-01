@@ -71,5 +71,18 @@ namespace todoAPI.Controllers
             ListToUpdate.Name = list.Name;
             return NoContent();
         }
+
+        [HttpDelete("{listId}")] 
+        public ActionResult DeleteList(int listId)
+        {
+            var ListToDelete = ListData.Current.List
+                .FirstOrDefault(c => c.Id == listId);
+            if (ListToDelete == null)
+            {
+                return NotFound();
+            }
+            ListData.Current.List.Remove(ListToDelete);
+            return NoContent();
+        }
     }
 }
