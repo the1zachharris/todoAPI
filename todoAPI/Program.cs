@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using todoAPI.DbContexts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ListInfoContext>(dbContextOptions
+    => dbContextOptions.UseSqlite("Data Source=ListInfo.db"));
 
 var app = builder.Build();
 
