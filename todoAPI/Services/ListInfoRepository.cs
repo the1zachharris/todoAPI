@@ -28,6 +28,11 @@ namespace todoAPI.Services
             await _context.Lists.AddAsync(list);
         }
 
+        public void DeleteList(List list)
+        {
+            _context.Lists.Remove(list);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);

@@ -73,17 +73,17 @@ namespace todoAPI.Controllers
         //    return NoContent();
         //}
 
-        //[HttpDelete("{listId}")] 
-        //public ActionResult DeleteList(int listId)
-        //{
-        //    var ListToDelete = ListData.Current.List
-        //        .FirstOrDefault(c => c.Id == listId);
-        //    if (ListToDelete == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ListData.Current.List.Remove(ListToDelete);
-        //    return NoContent();
-        //}
+        [HttpDelete("{listId}")]
+        public async Task<ActionResult> DeleteList(int listId)
+        {
+            var listEntity = await _listInfoRepository.GetListAsync(listId);
+            if (listEntity == null)
+            {
+                return NotFound();
+            }
+            _listInfoRepository.DeleteList(listEntity);
+            await _listInfoRepository.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

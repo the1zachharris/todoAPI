@@ -9,6 +9,8 @@ namespace todoAPI.Services
 
         Task CreateListAsync(List list);
 
+        void DeleteList(List list);
+
         Task<bool> SaveChangesAsync();
     }
 }
