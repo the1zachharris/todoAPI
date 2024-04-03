@@ -17,6 +17,8 @@ builder.Services.AddDbContext<ListInfoContext>();
 
 builder.Services.AddScoped<IListInfoRepository, ListInfoRepository>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

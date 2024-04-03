@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using todoAPI.models;
 using todoAPI.Services;
 
@@ -9,41 +10,30 @@ namespace todoAPI.Controllers
     public class ListController : ControllerBase
     {
         private readonly IListInfoRepository _listInfoRepository;
+        private readonly IMapper _mapper;
 
-        public ListController(IListInfoRepository listInfoRepository) 
+        public ListController(IListInfoRepository listInfoRepository, IMapper mapper) 
         {
             _listInfoRepository = listInfoRepository ?? throw new ArgumentNullException(nameof(listInfoRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ListDto>>> GetList() 
         {
             var listEntities = await _listInfoRepository.GetListsAsync();
-            var results = new List<ListDto>();
-            foreach (var listEntity in listEntities)
-            {
-                results.Add(new ListDto
-                {
-                    Id = listEntity.Id,
-                    Name = listEntity.Name
-                });
-            }
-            return Ok(results);
-            //return Ok(ListData.Current.List );
+            return Ok(_mapper.Map<IEnumerable<ListDto>>(listEntities));
         }
 
-        //[HttpGet("{id}", Name = "GetList")]
-        //public ActionResult<ListDto> GetList(int id) 
-        //{
-        //    var ListToReturn = ListData.Current.List
-        //        .FirstOrDefault(c => c.Id == id);
-
-        //    if (ListToReturn == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(ListToReturn);
-        //}
+        [HttpGet("{id}", Name = "getlist")]
+        public async Task<IActionResult> GetList(int id)
+        {
+            var list = await _listInfoRepository.GetListAsync(id);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<ListDto>(list));
+        }
 
         //[HttpPost]
         //public ActionResult<ListDto> CreateList(ListForCreationDto list)
