@@ -6,5 +6,9 @@ namespace todoAPI.Services
     {
         Task<IEnumerable<List>> GetListsAsync();
         Task<List?> GetListAsync(int listId);
+
+        Task CreateListAsync(List list);
+
+        Task<bool> SaveChangesAsync();
     }
 }

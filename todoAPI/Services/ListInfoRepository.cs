@@ -22,5 +22,15 @@ namespace todoAPI.Services
         {
             return await _context.Lists.ToListAsync();
         }
+
+        public async Task CreateListAsync(List list)
+        {
+            await _context.Lists.AddAsync(list);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
+        }
     }
 }

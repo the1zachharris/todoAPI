@@ -7,6 +7,7 @@ namespace todoAPI.Profiles
         public ListProfile() 
         {
             CreateMap<Entities.List, models.ListDto>();
+            CreateMap<models.ListForCreationDto, Entities.List>();
         }
     }
 }

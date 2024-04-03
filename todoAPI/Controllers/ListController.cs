@@ -35,31 +35,24 @@ namespace todoAPI.Controllers
             return Ok(_mapper.Map<ListDto>(list));
         }
 
-        //[HttpPost]
-        //public ActionResult<ListDto> CreateList(ListForCreationDto list)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var maxListId = ListData.Current.List.Max(p => p.Id);
+        [HttpPost]
+        public async Task<ActionResult<ListDto>> CreateList(ListForCreationDto list)
+        {
+            var finalList = _mapper.Map<Entities.List>(list);
 
-        //    var finalList = new ListDto()
-        //    {
-        //        Id = ++maxListId,
-        //        Name = list.Name
-        //    };
+            await _listInfoRepository.CreateListAsync(finalList);
+            await _listInfoRepository.SaveChangesAsync();
 
-        //    ListData.Current.List.Add(finalList);
+            var createdListToReturn = _mapper.Map<models.ListDto>(finalList);
 
-        //    return CreatedAtRoute("GetList", 
-        //        new
-        //        {
-        //            Id = finalList.Id
-        //        },
-        //        finalList
-        //    );
-        //}
+            return CreatedAtRoute("GetList",
+                new
+                {
+                    Id = createdListToReturn.Id
+                },
+                createdListToReturn
+            );
+        }
 
         //[HttpPut("{listId}")]
 
