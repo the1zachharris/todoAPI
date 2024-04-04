@@ -19,6 +19,12 @@ builder.Services.AddScoped<IListInfoRepository, ListInfoRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddCors(options => options.AddPolicy(name: "ArticleGenerator",
+	policy =>
+	{
+		policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+	}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("ArticleGenerator");
 
 app.UseHttpsRedirection();
 
